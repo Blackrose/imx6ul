@@ -1,0 +1,57 @@
+From f9ba0de2895d5e1bc2912c36abdd98da6b384d23 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 30 Jan 2018 23:10:03 +0200
+Subject: [PATCH 46/50] cl-som-imx6ul: Set BM_CLPCR_VSTBY=1
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/mach-imx/mach-cl-som-imx6ul.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/arch/arm/mach-imx/mach-cl-som-imx6ul.c b/arch/arm/mach-imx/mach-cl-som-imx6ul.c
+index 8a40106..8e464a1 100644
+--- a/arch/arm/mach-imx/mach-cl-som-imx6ul.c
++++ b/arch/arm/mach-imx/mach-cl-som-imx6ul.c
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/of_address.h>
+ #include <linux/of_platform.h>
++#include <linux/io.h>
+ #include <linux/regmap.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
+@@ -37,6 +38,23 @@ static void __init cl_som_imx6ul_clk_init(void)
+ 	cl_som_imx6ul_sai2_clk_init(gpr);
+ }
+ 
++static void __init cl_som_imx6ul_ccm_init(void)
++{
++#define BM_CLPCR_VSTBY			(0x1 << 8)
++#define CLPCR				0x54
++	void __iomem *ccm_base;
++	struct device_node *np;
++	u32 val;
++
++	np = of_find_compatible_node(NULL, NULL, "fsl,imx6ul-ccm");
++	ccm_base = of_iomap(np, 0);
++	BUG_ON(!ccm_base);
++
++	val = readl_relaxed(ccm_base + CLPCR);
++	val |= BM_CLPCR_VSTBY;
++	writel_relaxed(val, ccm_base + CLPCR);
++}
++
+ static int __init cl_som_imx6ul_init(void)
+ {
+ 	struct device_node *np;
+@@ -49,6 +67,7 @@ static int __init cl_som_imx6ul_init(void)
+ 	}
+ 
+ 	cl_som_imx6ul_clk_init();
++	cl_som_imx6ul_ccm_init();
+ 
+ 	return 0;
+ }
+-- 
+1.9.1
+

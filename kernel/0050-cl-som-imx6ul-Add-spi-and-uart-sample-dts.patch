@@ -1,0 +1,300 @@
+From b6279836b0f841f90ff20d48d60a90ef3cc47091 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 6 Mar 2019 18:19:14 +0200
+Subject: [PATCH 50/50] cl-som-imx6ul: Add spi and uart sample dts
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/boot/dts/imx6ul-sbc-imx6ul-spi.dts   | 101 +++++++++++++++
+ arch/arm/boot/dts/imx6ul-sbc-imx6ul-uarts.dts | 171 ++++++++++++++++++++++++++
+ 2 files changed, 272 insertions(+)
+ create mode 100644 arch/arm/boot/dts/imx6ul-sbc-imx6ul-spi.dts
+ create mode 100644 arch/arm/boot/dts/imx6ul-sbc-imx6ul-uarts.dts
+
+diff --git a/arch/arm/boot/dts/imx6ul-sbc-imx6ul-spi.dts b/arch/arm/boot/dts/imx6ul-sbc-imx6ul-spi.dts
+new file mode 100644
+index 0000000..76a5d51
+--- /dev/null
++++ b/arch/arm/boot/dts/imx6ul-sbc-imx6ul-spi.dts
+@@ -0,0 +1,101 @@
++/*
++ * Copyright (C) 2015 CompuLab LTD.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include "imx6ul-cl-som-imx6ul.dts"
++
++#if __SPI_EXAMPLE__
++
++SPI 1 Interface Signals
++
++SPI1_CLK         77*     O                                     Always available
++SPI1_CLK        146*     O                                     Always available
++SPI1_CS0_N      79*      O     SPI-1 Chip select 0             Always available
++SPI1_CS0_N      148*     O     SPI-1 Chip select 0             Always available
++SPI1_CS1_N      118*     O     SPI-1 Chip select 1             Always available
++SPI1_CS2_N      120*      O        SPI-1 Chip select 2            Always available
++SPI1_CS3_N      122*      O        SPI-1 Chip select 3            Always available
++SPI1_MISO       76*       I                                       Always available
++SPI1_MISO       85*       I                                       Always available
++SPI1_MOSI       74*       O                                       Always available
++SPI1_MOSI       86*       O       data out                       'W' and 'WAB' options
++
++SPI 2 Interface Signals
++
++SPI2_CLK         101*         O     SPI-2 Master clock out; slave clock in      Always available
++SPI2_CLK          69          O     SPI-2 Master clock out; slave clock in      Only in revision starting 1.1
++SPI2_CS0_N       103*         O     SPI-2 Chip select 0                         Always available
++SPI2_CS0_N        58          O     SPI-2 Chip select 0                         Only in revision starting 1.1
++SPI2_CS1_N       100*         O     SPI-2 Chip select 1                         Always available
++SPI2_CS2_N       102*         O     SPI-2 Chip select 2                         Always available
++SPI2_CS3_N       154*         O     SPI-2 Chip select 3                         Always available
++SPI2_MISO         91*         I     SPI-2 Master data out; slave data in        Always available
++SPI2_MISO         63          I     SPI-2 Master data out; slave data in        Only in revision starting 1.1
++SPI2_MOSI         89*         O     SPI-2 Master data in; slave data out        Always available
++SPI2_MOSI         65          O     SPI-2 Master data in; slave data out        Only in revision starting 1.1
++
++SPI 3 Interface Signals
++
++SPI3_CLK          13*          O     SPI-3 Master clock out; slave clock in          Only w/o ‘WAB’ option.
++SPI3_CS0_N        11*          O     SPI-3 Chip select 0                             Only w/o ‘WAB’ option.
++SPI3_MISO          9*          I     SPI-3 Master data out; slave data in            Only w/o ‘WAB’ option.
++SPI3_MOSI          7*          O     SPI-3 Master data in; slave data out            Only w/o ‘WAB’ option.
++
++#endif // __SPI_EXAMPLE__
++
++&iomuxc {
++	cl-som-imx6ul-spi {
++
++		pinctrl_ecspi1: ecspi1grp {
++			fsl,pins = <
++				MX6UL_PAD_CSI_DATA04__ECSPI1_SCLK	0x1b0b1	
++				MX6UL_PAD_LCD_DATA22__ECSPI1_MOSI	0x1b0b1
++				MX6UL_PAD_LCD_DATA23__ECSPI1_MISO	0x1b0b1
++			>;
++		};
++
++		pinctrl_ecspi1_cs: ecspi1csgrp {
++			fsl,pins = <
++				MX6UL_PAD_CSI_DATA05__GPIO4_IO26	0x17059	
++				MX6UL_PAD_LCD_DATA05__GPIO3_IO10	0x17059	
++				MX6UL_PAD_LCD_DATA06__GPIO3_IO11	0x17059 
++				MX6UL_PAD_LCD_DATA07__GPIO3_IO12	0x17059
++			>;
++		};
++
++	};
++};
++
++&ecspi1 {
++	fsl,spi-num-chipselects = <4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
++	cs-gpios = <&gpio4 26 0>, <&gpio3 10 0>, <&gpio3 11 0>, <&gpio3 12 0>;
++	status = "okay";
++
++	/* spidev examlpe */
++	spidev@0 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <30000000>;
++		reg = <0>;
++	};
++	spidev@1 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <30000000>;
++		reg = <1>;
++	};
++	spidev@2 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <30000000>;
++		reg = <2>;
++	};
++	spidev@3 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <30000000>;
++		reg = <3>;
++	};
++};
+diff --git a/arch/arm/boot/dts/imx6ul-sbc-imx6ul-uarts.dts b/arch/arm/boot/dts/imx6ul-sbc-imx6ul-uarts.dts
+new file mode 100644
+index 0000000..8dac0b6
+--- /dev/null
++++ b/arch/arm/boot/dts/imx6ul-sbc-imx6ul-uarts.dts
+@@ -0,0 +1,171 @@
++/*
++ * Copyright (C) 2015 CompuLab LTD.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include "imx6ul-cl-som-imx6ul.dts"
++
++#if __UART_EXAMPLE__
++
++Signal Name | Pin # | Type | Description Availability
++
++UART1_CTS 67* I UART-1 clear to send. Always available
++UART1_RTS 61* O UART-1 request to send. Always available
++UART1_RX 135* I UART-1 serial data receive Always available
++UART1_TX 129* O UART-1 serial data transmit Always available
++
++/* Bluetooth */
++UART2_CTS 17* I UART-2 clear to send. Only w/o ‘WAB’ option.
++UART2_RTS 15* O UART-2 request to send. Only w/o ‘WAB’ option.
++UART2_RX 13* I UART-2 serial data receive Only w/o ‘WAB’ option.
++UART2_TX 11* O UART-2 serial data transmit Only w/o ‘WAB’ option.
++
++/* Debug Console */
++UART3_CTS 52* I UART-3 clear to send. Always available
++UART3_CTS 71 I UART-3 clear to send. Always available
++UART3_RTS 9* O UART-3 request to send Only w/o ‘WAB’ option.
++UART3_RX 117* I UART-3 serial data receive Always available
++UART3_TX 111* O UART-3 serial data transmit Always available
++
++
++UART3_CTS 52* I UART-3 clear to send. Always available
++UART3_CTS 71 I UART-3 clear to send. Always available
++UART3_RTS 9* O UART-3 request to send Only w/o ‘WAB’ option.
++UART3_RX 117* I UART-3 serial data receive Always available
++UART3_TX 111* O UART-3 serial data transmit Always available
++
++UART4_CTS 100* I UART-4 clear to send. Always available
++UART4_RTS 102* O UART-4 request to send Always available
++UART4_RX 104* I UART-4 serial data receive Always available
++UART4_TX 98* O UART-4 serial data transmit Always available
++
++UART5_CTS 91* I UART-5 clear to send. Always available
++UART5_CTS 194* I UART-5 clear to send. Always available
++UART5_RTS 73* O UART-5 request to send. Always available
++UART5_RTS 89* O UART-5 request to send. Always available
++UART5_RX 63* I UART-5 serial data receive Always available
++UART5_RX 103* I UART-5 serial data receive Always available
++UART5_TX 65* O UART-5 serial data transmit Always available
++UART5_TX 101* O UART-5 serial data transmit Always available
++
++UART6_CTS 115* I UART-6 clear to send. Always available
++UART6_RTS 113* O UART-6 request to send. Always available
++UART6_RX 5* I UART-6 serial data receive Always available
++UART6_RX 95* I UART-6 serial data receive Always available
++UART6_TX 3* O UART-6 serial data transmit Always available
++UART6_TX 97* O UART-6 serial data transmit Always available
++
++UART7_CTS 120* I UART-7 clear to send. Always available
++UART7_RTS 122* O UART-7 request to send. Always available
++UART7_RX 92* I UART-7 serial data receive Always available
++UART7_TX 94* O UART-7 serial data transmit Always available
++
++UART8_CTS 116* I UART-8 clear to send. Always available
++UART8_RTS 118* O UART-8 request to send. Always available
++UART8_RX 148* I UART-8 serial data receive Always available
++UART8_TX 146* O UART-8 serial data transmit Always available
++
++#endif // __UART_EXAMPLE__
++
++&iomuxc {
++	cl-som-imx6ul-uarts {
++
++		pinctrl_uart1: uart1grp {
++			fsl,pins = <
++				MX6UL_PAD_UART1_CTS_B__UART1_DCE_CTS 0x1b0b1
++				MX6UL_PAD_UART1_RTS_B__UART1_DCE_RTS 0x1b0b1
++				MX6UL_PAD_GPIO1_IO03__UART1_DCE_RX 0x1b0b1
++				MX6UL_PAD_GPIO1_IO02__UART1_DCE_TX 0x1b0b1
++			>;
++		};
++
++		pinctrl_uart4: uart4grp {
++			fsl,pins = <
++				MX6UL_PAD_LCD_HSYNC__UART4_DCE_CTS 0x1b0b1 
++				MX6UL_PAD_LCD_VSYNC__UART4_DCE_RTS 0x1b0b1
++				MX6UL_PAD_LCD_ENABLE__UART4_DCE_RX 0x1b0b1
++				MX6UL_PAD_LCD_CLK__UART4_DCE_TX 0x1b0b1
++			>;
++		};
++
++		pinctrl_uart5: uart5grp {
++			fsl,pins = <
++				MX6UL_PAD_UART5_RX_DATA__UART5_DCE_RX 0x1b0b1 /* P4_2 */
++				MX6UL_PAD_UART5_TX_DATA__UART5_DCE_TX 0x1b0b1 /* P4_4 */
++			>;
++		};
++
++		pinctrl_uart6_x: uart6grp1 {
++			fsl,pins = <
++				MX6UL_PAD_ENET2_RX_DATA0__UART6_DCE_TX 0x1b0b1 /* P1_3 */
++				MX6UL_PAD_ENET2_RX_DATA1__UART6_DCE_RX 0x1b0b1 /* P1_5 */
++			>;
++		};
++
++		pinctrl_uart7: uart7grp {
++			fsl,pins = <
++				MX6UL_PAD_LCD_DATA06__UART7_DCE_CTS 0x1b0b1
++				MX6UL_PAD_LCD_DATA07__UART7_DCE_RTS 0x1b0b1
++				MX6UL_PAD_LCD_DATA17__UART7_DCE_RX 0x1b0b1
++				MX6UL_PAD_LCD_DATA16__UART7_DCE_TX 0x1b0b1
++			>;
++		};
++
++		pinctrl_uart8: uart8grp {
++			fsl,pins = <
++				MX6UL_PAD_LCD_DATA04__UART8_DCE_CTS 0x1b0b1
++				MX6UL_PAD_LCD_DATA05__UART8_DCE_RTS 0x1b0b1
++				MX6UL_PAD_LCD_DATA20__UART8_DCE_TX 0x1b0b1
++				MX6UL_PAD_LCD_DATA21__UART8_DCE_RX 0x1b0b1
++
++			>;
++		};
++	};
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++	/* enable rts/cts */
++	fsl,uart-has-rtscts;
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++	/* enable rts/cts */
++	fsl,uart-has-rtscts;
++};
++
++&uart5 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart5>;
++	status = "okay";
++};
++
++&uart6 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart6_x>;
++	status = "okay";
++};
++
++&uart7 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart7>;
++	status = "okay";
++	/* enable rts/cts */
++	fsl,uart-has-rtscts;
++};
++
++&uart8 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart8>;
++	status = "okay";
++	/* enable rts/cts */
++	fsl,uart-has-rtscts;
++};
+-- 
+1.9.1
+

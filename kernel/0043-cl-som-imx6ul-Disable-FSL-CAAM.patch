@@ -1,0 +1,44 @@
+From 70276e9f83e312baa218773c16018d227a580c27 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Mon, 18 Dec 2017 14:12:49 +0200
+Subject: [PATCH 43/50] cl-som-imx6ul: Disable FSL CAAM
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/configs/cl_som_imx6ul_defconfig | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/configs/cl_som_imx6ul_defconfig b/arch/arm/configs/cl_som_imx6ul_defconfig
+index 4baed33..75af8ce 100644
+--- a/arch/arm/configs/cl_som_imx6ul_defconfig
++++ b/arch/arm/configs/cl_som_imx6ul_defconfig
+@@ -295,6 +295,7 @@ CONFIG_SERIAL_IMX_CONSOLE=y
+ CONFIG_SERIAL_FSL_LPUART=y
+ CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
+ CONFIG_FSL_OTP=y
++CONFIG_HW_RANDOM=y
+ # CONFIG_I2C_COMPAT is not set
+ CONFIG_I2C_CHARDEV=y
+ # CONFIG_I2C_HELPER_AUTO is not set
+@@ -527,6 +528,7 @@ CONFIG_CORESIGHT_SINK_ETBV10=y
+ CONFIG_CORESIGHT_SOURCE_ETM3X=y
+ CONFIG_SECURITYFS=y
+ CONFIG_CRYPTO_USER=y
++CONFIG_CRYPTO_AUTHENC=y
+ CONFIG_CRYPTO_TEST=m
+ CONFIG_CRYPTO_CBC=y
+ CONFIG_CRYPTO_CTS=y
+@@ -548,10 +550,6 @@ CONFIG_CRYPTO_CAMELLIA=y
+ CONFIG_CRYPTO_DES=y
+ CONFIG_CRYPTO_TWOFISH=y
+ # CONFIG_CRYPTO_ANSI_CPRNG is not set
+-CONFIG_CRYPTO_DEV_FSL_CAAM=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SM=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SM_TEST=y
+-CONFIG_CRYPTO_DEV_FSL_CAAM_SECVIO=y
+ CONFIG_CRC_CCITT=m
+ CONFIG_CRC_T10DIF=y
+ CONFIG_LIBCRC32C=m
+-- 
+1.9.1
+

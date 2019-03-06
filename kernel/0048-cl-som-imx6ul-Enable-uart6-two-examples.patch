@@ -1,0 +1,48 @@
+From 22775ee4b2bb3a836a0db328f8abada36c384bff Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 14 Aug 2018 12:11:25 +0300
+Subject: [PATCH 48/50] cl-som-imx6ul: Enable uart6, two examples
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/boot/dts/imx6ul-cl-som-imx6ul.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx6ul-cl-som-imx6ul.dtsi b/arch/arm/boot/dts/imx6ul-cl-som-imx6ul.dtsi
+index 2b796db..b267e98 100644
+--- a/arch/arm/boot/dts/imx6ul-cl-som-imx6ul.dtsi
++++ b/arch/arm/boot/dts/imx6ul-cl-som-imx6ul.dtsi
+@@ -346,6 +346,20 @@
+ 				MX6UL_PAD_LCD_RESET__WDOG1_WDOG_ANY    0x30b0
+ 			>;
+ 		};
++
++		pinctrl_uart6: uart6grp {
++			fsl,pins = <
++				MX6UL_PAD_CSI_PIXCLK__UART6_DCE_RX 0x1b0b1 /* P1_95 */
++				MX6UL_PAD_CSI_MCLK__UART6_DCE_TX 0x1b01    /* P1_97 */
++			>;
++		};
++
++		pinctrl_uart6_1: uart6grp1 {
++			fsl,pins = <
++				MX6UL_PAD_ENET2_RX_DATA0__UART6_DCE_TX 0x1b0b1 /* P1_3 */
++				MX6UL_PAD_ENET2_RX_DATA1__UART6_DCE_RX 0x1b0b1 /* P1_5 */
++			>;
++		};
+ 	};
+ };
+ 
+@@ -608,3 +622,9 @@
+ 	pinctrl-0 = <&pinctrl_wdog>;
+ 	fsl,wdog_b;
+ };
++
++&uart6 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart6>;
++	status = "okay";
++};
+-- 
+1.9.1
+

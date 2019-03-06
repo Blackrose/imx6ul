@@ -1,0 +1,66 @@
+From 63823349bd7103f459bf25eda82d1c52b29e9ec7 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Wed, 6 Mar 2019 18:18:03 +0200
+Subject: [PATCH 49/50] cl-som-imx6ul: config: Disable PM, remove unused stuff
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ arch/arm/configs/cl_som_imx6ul_defconfig | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/configs/cl_som_imx6ul_defconfig b/arch/arm/configs/cl_som_imx6ul_defconfig
+index 75af8ce..6c5e2d6 100644
+--- a/arch/arm/configs/cl_som_imx6ul_defconfig
++++ b/arch/arm/configs/cl_som_imx6ul_defconfig
+@@ -45,6 +45,7 @@ CONFIG_SOC_VF610=y
+ CONFIG_SMP=y
+ CONFIG_HAVE_ARM_ARCH_TIMER=y
+ CONFIG_VMSPLIT_2G=y
++CONFIG_HOTPLUG_CPU=y
+ CONFIG_PREEMPT=y
+ CONFIG_AEABI=y
+ CONFIG_HIGHMEM=y
+@@ -59,12 +60,10 @@ CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
+ CONFIG_ARM_IMX6Q_CPUFREQ=y
+ CONFIG_ARM_IMX7D_CPUFREQ=y
+-CONFIG_CPU_IDLE=y
+ CONFIG_VFP=y
+ CONFIG_NEON=y
+ CONFIG_BINFMT_MISC=m
+-CONFIG_PM_DEBUG=y
+-CONFIG_PM_TEST_SUSPEND=y
++# CONFIG_SUSPEND is not set
+ CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+@@ -254,10 +253,6 @@ CONFIG_USB_NET_ZAURUS=m
+ CONFIG_ATH_CARDS=y
+ CONFIG_ATH6KL=m
+ CONFIG_ATH6KL_SDIO=m
+-CONFIG_BCMDHD=m
+-CONFIG_BCMDHD_SDIO=y
+-CONFIG_BCMDHD_FW_PATH="/lib/firmware/bcm/fw_bcmdhd.bin"
+-CONFIG_BCMDHD_NVRAM_PATH="/lib/firmware/bcm/bcmdhd.cal"
+ CONFIG_WL_TI=y
+ CONFIG_WL1251=y
+ CONFIG_WL1251_SDIO=y
+@@ -391,7 +386,6 @@ CONFIG_SND_USB_AUDIO=m
+ CONFIG_SND_SOC=y
+ CONFIG_SND_IMX_SOC=y
+ CONFIG_SND_SOC_EUKREA_TLV320=y
+-CONFIG_SND_SOC_IMX_WM8731=y
+ CONFIG_SND_SOC_IMX_WM8960=y
+ CONFIG_SND_SOC_IMX_SII902X=y
+ CONFIG_SND_SOC_IMX_WM8958=y
+@@ -447,7 +441,6 @@ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_SDHCI_ESDHC_IMX=y
+ CONFIG_MXC_IPU=y
+ CONFIG_MXC_IPU_V3_PRE=y
+-CONFIG_MXC_GPU_VIV=y
+ CONFIG_MXC_SIM=y
+ CONFIG_MXC_MIPI_CSI2=y
+ CONFIG_NEW_LEDS=y
+-- 
+1.9.1
+

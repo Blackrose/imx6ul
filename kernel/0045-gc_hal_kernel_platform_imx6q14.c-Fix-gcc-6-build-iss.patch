@@ -1,0 +1,30 @@
+From 7a6c877ff8a9b5ae68a7bdd095566bfb8397c4a9 Mon Sep 17 00:00:00 2001
+From: Valentin Raevsky <valentin@compulab.co.il>
+Date: Tue, 30 Jan 2018 21:36:19 +0200
+Subject: [PATCH 45/50] gc_hal_kernel_platform_imx6q14.c: Fix gcc-6 build issue
+
+Signed-off-by: Valentin Raevsky <valentin@compulab.co.il>
+---
+ .../kernel/platform/freescale/gc_hal_kernel_platform_imx6q14.c      | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mxc/gpu-viv/hal/os/linux/kernel/platform/freescale/gc_hal_kernel_platform_imx6q14.c b/drivers/mxc/gpu-viv/hal/os/linux/kernel/platform/freescale/gc_hal_kernel_platform_imx6q14.c
+index e436ada..51624ba 100644
+--- a/drivers/mxc/gpu-viv/hal/os/linux/kernel/platform/freescale/gc_hal_kernel_platform_imx6q14.c
++++ b/drivers/mxc/gpu-viv/hal/os/linux/kernel/platform/freescale/gc_hal_kernel_platform_imx6q14.c
+@@ -475,8 +475,10 @@ gckPLATFORM_AdjustParam(
+ 
+     Args->gpu3DMinClock = initgpu3DMinClock;
+ 
+-  if(Args->physSize == 0)
+-    Args->physSize = 0x80000000;
++    if(Args->physSize == 0)
++    {
++        Args->physSize = 0x80000000;
++    }
+ 
+     return gcvSTATUS_OK;
+ }
+-- 
+1.9.1
+
