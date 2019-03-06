@@ -1,1 +1,33 @@
 # imx6ul
+
+This repository provides more recent patches for the CompuLab `cl-som-imx6ul` module.
+
+This README.adoc overrides the https://mediawiki.compulab.com/w/index.php?title=CL-SOM-iMX6UL:_Linux:_Kernel#Getting_kernel_sources[Getting kernel sources].
+
+## Kernel
+
+* Prepare build directory
+[source,console]
+mkdir -p ~/development/cl-som-imx6ul/
+cd ~/development/cl-som-imx6ul
+export BUILD_DIR=$(pwd)
+
+* Get NXP kernel sources
+[source,console]
+cd ${BUILD_DIR}
+git clone git://git.freescale.com/imx/linux-2.6-imx.git linux-imx
+git checkout -b development rel_imx_4.1.15_1.0.0_ga
+
+* Get CompuLab kernel pathces
+[source,console]
+cd ${BUILD_DIR}
+git clone  https://github.com/compulab-yokneam/imx6ul.git .
+
+* Apply the cl-som-imx6ul patches
+[source,console]
+cd ${BUILD_DIR}/linux-imx
+git am ${BUILD_DIR}/kernel/*.patch
+
+* How to build
+
+Follow the instructions of the https://mediawiki.compulab.com/w/index.php?title=CL-SOM-iMX6UL:_Linux:_Kernel#Building_the_kernel[Building the kernel]
